@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Make a New List</title>
+    <link rel="stylesheet" href="style/main.css" type="text/css">
+  </head>
+  <body>
+    <div id="header">
+      <h1>Upload a New LaTeX File</h1>
+    </div>
+    <div id="nav">
+      <p><a href="/">All Problem Lists</a></p>
+    </div>
+    <div id="content">
+      <form action="" method="post" id="upload-form">
+        <p><input type="file" name="_attachments" id="file"></p>
+           <input type="hidden" name="_rev" value="" id="rev">
+        <p><input type="submit" value="Upload &rarr;"></p>
+      </form>
+      <div id="in-queue">
+        Hey there. A problem ist lis currently being processed. Watch this page until
+        this message disappears.
+      </div>      
+    </div>
+
+    <script src="/_utils/script/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/_utils/script/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+
+      $(function($) {
+        var newlist = "/aimpl/_design/aimpl";
+        $.get(newlist, {}, function(resp) {
+          var reload = function() {
+            window.location.reload();
+          };
+          resp = JSON.parse(resp);
+          var rev = resp._rev;
+          $("#rev").val(rev)
+          // if we see new: true, poll every 10 secs to see if it is still the case
+          if(resp.is_new) {
+            $("#in-queue").show();
+            window.setTimeout(function() {reload();}, 1000); //bump to 10000
+          } else { // show upload form
+            $("#upload-form").submit(function() {
+              try {
+                $(this).ajaxSubmit({
+                   url: "/aimpl/newlist",
+                   success: function(resp) {
+                     $.get(newlist, {}, function(resp) {
+                       var resp = JSON.parse(resp);
+                       resp.is_new = true;
+                       resp = JSON.stringify(resp);
+                       $.ajax({
+                         url: newlist,
+                         type: "PUT",
+                         data: resp,
+                         contentType: "application/json",
+                         success: function() {
+                           reload();
+                         }
+                       });
+                      });
+                      //reload();
+                    },
+                    error: function(resp) {
+                   }
+                 });
+              } catch (e) {
+                alert("error" + e);
+              }
+              return false;
+            });
+            $("#upload-form").show();
+          }
+        });
+      });
+    </script>
+  <style type="text/css" media="screen">
+    #upload-form {
+/*      display:none;*/
+    }
+    
+    #in-queue {
+      display:none;
+    }
+  </style>
+  </body>
+</html>

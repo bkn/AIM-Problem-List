@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <style type="text/css" media="screen">
+      body {
+        font-family: "Helvetica Neue", Helvetica, Sans-serif;
+        width:920px;
+        margin: 20px auto 0 auto;
+      }
+
+      h1 {
+        padding-left:111px;
+      }
+
+      table {
+        width:400px;
+      }
+
+      th, td {
+        text-align:right;
+        height:30px;
+      }
+
+      .spacer {
+        margin-top:20px;
+        height:20px;
+      }
+    </style>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>

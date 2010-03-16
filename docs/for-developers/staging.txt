@@ -1,0 +1,67 @@
+Staging
+-----------------------------------
+Date: 2009-11-16 06:37 AM
+
+Doc to update staging.
+
+1. Paths
+
+Path for staging on ec2 is :
+    /usr/local/aim-staging
+
+Couchdb data are in :
+
+    /aimpl/staging
+    
+2. Update sources
+    
+    $ cd /usr/local/aim-staging/src/aimpl
+    $ git pull
+    
+2. Update CouchDB
+
+If CouchDB has been updated run the command:
+
+    $ git submodule update
+    
+Then rebuild couchdb. 
+
+    $ cd vendor/couchdb
+    $ ./configure --prefix=/usr/local/aim-staging --localstatedir=/aimpl/staging
+    $ make
+    $ make install
+    $ chown -R couchdb.couchdb /aimpl/staging
+    
+Make sure you have /etc/aimpl-staging.ini /usr/local/aim-staging/etc/couchdb.
+
+Shutdown current couchdb :
+
+    $ sudo su - couchdb -c "/usr/local/aim-staging/bin/couchdb -a /usr/local/aim-staging/etc/couchdb/aimpl-staging.ini -d -p /aimpl/staging/run/couchdb/couchdb.pid"
+    
+Launch new couchdb : 
+
+    $ sudo su - couchdb -c "/usr/local/aim-staging/bin/couchdb -a /usr/local/aim-staging/etc/couchdb/aimpl-staging.ini -b -p /aimpl/staging/run/couchdb/couchdb.pid"
+    
+3. Update bootstrap
+
+    $ cd /usr/local/aim-staging/src/aimpl
+    $ python bootstrap.py
+    $ ./bin/buildout
+    
+4. relaunch django
+    Get the pid wher you have ./bin/django running (not django-wsgi!) and kill them. Then relaunch django
+
+    $ nohup ./bin/django runserver 0.0.0.0:8888 --settings=aimauth.staging &
+    
+    
+5. Update Couchdb datas
+
+    a. Put the new data in couchdb (insert method to import docs)
+    b. Update the couchapp
+    
+    $ cd src/aimpl
+    $ ../../bin/couchapp push http://aimpl.org:5985/aimpl
+    
+That's it. app is available on :
+
+    http://aimpl.org:8888:/pl

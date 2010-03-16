@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ pl.title }} : Table of Contents</title>
+    <link rel="stylesheet" href="{{{path.css}}}" type="text/css"> 
+     <script>
+      var basePath = "{{path.basePath}}";
+    </script>
+    <script src="{{{path.jsMath}}}"></script>
+  </head>
+  <body>
+    <div id="header">
+      <h1>{{{ pl.title }}}</h1>      
+    </div>
+    <div id="nav">
+      <p><a href="{{path.index}}">All Problem Lists</a></p>
+    </div>
+    <div id="content">
+      <h2>{{{ pl.title }}}</h2>  
+      <h3>Edited by {{{ pl.author }}}</h3>
+	  <br/>		
+	  <div class="xmath"> {{{ pl.intro }}} </div>	
+	  <br/>
+      <h3>Sections</h3>
+      <ul>

@@ -1,0 +1,27 @@
+       </ol>
+    </div>
+    <script src="{{path.json2}}"></script>
+    <script src="{{path.jQuery}}"></script>
+    <script src="{{path.jQueryCouch}}"></script>
+    
+    <script src="{{path.mustache}}"></script>
+    <script src="{{{path.couchApp}}}"></script>
+    <script type="text/javascript" charset="utf-8">
+      var pl_id = "{{sec.list_id}}";
+      var pl_name = "{{sec.list_name}}";
+      var sec_num = "{{sec_num}}";
+      
+      var matches = window.location.toString().match(/^[^#]*(#.+)$/);
+      if (!matches) {
+        var current_location = window.location.pathname.split("/");
+        var probtag = current_location[current_location.length-1];
+        if (probtag.split(".").length > 1) {
+          window.location = window.location.toString() + "#" + probtag;
+        }
+      }
+      
+    </script>
+    <script src="{{path.utils}}"></script>
+    <script src="{{{path.appJS}}}"></script>
+  </body>
+</html>

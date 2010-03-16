@@ -1,0 +1,56 @@
+      {{{end_list}}}
+      </ul>
+    </div>
+    <script src="{{path.json2}}"></script>
+    <script src="{{path.jQuery}}"></script>
+    <script src="{{path.jQueryCouch}}"></script>
+    
+    <script src="{{path.mustache}}"></script>
+    <script src="{{{path.couchApp}}}"></script>
+     <script src="{{path.utils}}"></script>
+    <script>
+      
+$.CouchApp(function(app) {
+    $("#remarks input").click(function() {
+        var id = this.id.split('!');
+        var remn = $(this).parent();
+        var status = this.name;
+        if (status == "denied") {
+            app.db.openDoc(id[1], {
+                success: function(rem) {
+                    rem.status = status;
+                    app.db.saveDoc(rem);
+                    remn.hide("slow");
+                }
+            });
+        } else {
+            app.db.openDoc(id[0], {
+                success: function(pblock) {
+                    app.db.openDoc(id[1], {
+                        success: function(rem) {
+                            pblock.remarks = pblock.remarks || [];
+                            pblock.remarks.push(rem);
+                            app.db.saveDoc(pblock, {
+                                success: function() {
+                                    rem.status = status;
+                                    app.db.saveDoc(rem);
+                                    remn.hide("slow");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    })
+},
+
+{
+    dbname: "aimpl",
+    ddocname: "aimpl"
+});
+    </script>
+  </body>
+</html>
+  
+  

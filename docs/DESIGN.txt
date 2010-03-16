@@ -1,0 +1,80 @@
+============================================================================
+Design Document for AIM Problem List: Authentication and Authorization Proxy
+============================================================================
+
+User Levels
+-----------
+
+ * Chief editor: edits URLs, slugs, metadata, assigns editors.
+ * Editor: edit anything about a problem list, sets privileges for users.
+ * Privileged user: remarks are published without moderation.
+ * Authenticated user: remarks are moderated, can request more privileges.
+ * Unauthorized (anonymous) user: read-only, remarks are moderated, may need
+   CAPTCHA.
+
+The first three levels can be represented via Django's Group model.  The last
+two levels are represented simply by whether the user is authenticated or not.
+
+Django models
+-------------
+
+ * django.contrib.auth.models.User
+ * django.contrib.auth.models.Group: "Chief editor", "Editor", "Privileged"
+ * aimpl.models.ProblemList: denotes a problem list.  Many-to-many field
+   "editors" denoting which editors have control over this problem list.
+
+Scenarios
+=========
+
+User creation
+-------------
+
+URL: /accounts/register/
+
+ * Use variation on django-registration app for this.
+ * Sends an activation link to user, nothing is stored in the database yet.
+ * Activation link contains all user information plus a verification hash.
+   This avoids having to remove stale users.  However, if we collect a large
+   amount of information we should store this in the database.
+
+URL: /accounts/activate/?username=<username>&email=<email>&verify=<hash>
+
+ * Verifies the hash.
+ * Creates the user in the database.
+ * Prompts the user to enter a password.
+
+User login
+----------
+
+URL: /accounts/login/?next=<next>
+
+ * Displays a login form for username/password.
+ * When successfully logged in, sends a redirect to optional parameter <next>.
+
+Authorization of an action
+--------------------------
+
+e.g. "create PL"
+
+URL: /pl/<plname>/
+HTTP verb: POST/PUT
+
+1. Authenticate user via Django's auth middleware (session cookies).  This will
+   give us a user and its associated groups.
+2. Verify that the user has sufficient privileges to perform the operation.
+
+Linkage between Django request/session data and communication with CouchDB
+--------------------------------------------------------------------------
+
+I assume the simplest way for this to happen is to send additional headers from
+the Django auth proxy.  For example:
+
+ * X-AIMPL-User: jason
+ * X-AIMPL-Groups: Chief Editors,Editors
+
+The "Editors" group would only be sent when accessing a problem list for which
+the user is an editor.
+
+Alternatively, we could make a simple Django "whoami" endpoint for the AJAX
+application to access to determine what privileges the current user has, and
+whether or not they are logged in.

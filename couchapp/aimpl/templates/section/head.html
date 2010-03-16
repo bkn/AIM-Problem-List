@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Section : {{{sec.title}}}</title>
+    <link rel="stylesheet" href="{{{path.css}}}" type="text/css"> 
+     <script>
+      var basePath = "{{path.basePath}}";
+    </script>
+    <script src="{{{path.jsMath}}}"></script>
+  </head>
+  <body>
+    <div id="header">
+      <h1><div class="xmath">{{{sec.pl_title}}}</div></h1>
+      <h2><div class="xmath">{{{sec.title}}}</div></h2>      
+    </div>
+    <div id="nav">
+  	  <hr/>
+      <p><a href="{{path.index}}">All Problem Lists</a></p>
+      <hr/>
+      <hr/><p>
+      <div class="pdflink"><a href="http://aimath.org/pl/{{{sec.list_name}}}">PDF version of this problem list</a>  </div></h2>
+  	  <p>
+      <p>
+		<ul></ul>
+      </p>
+    </div>
+    <div id="content">
+       <h2><div class="xmath"><center>{{{sec_num}}}. {{{sec.title}}}</center></div></h2>
+       <p class="intro"><div class="xmath">{{{sec.intro}}}</div></p>
+       
+       <ol>

@@ -1,0 +1,40 @@
+{% extends "registration/base.html" %}
+
+{% block content %}
+<h1>Login</h1>
+
+<form method="post" action=".">
+  <table>
+  {{ form.as_table }}
+    <tr>
+      <th>
+        
+      </th>
+      <td>
+        <input type="submit" value="Log in" />
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Forgotten your password ?</td>
+      <td>
+        <a href="{% url auth_password_reset %}">Reset it</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Not signed up ? </td>
+      <td>
+        <a href="{% url registration_register %}">Sign Up</a>
+      </td>
+    </tr>
+  </table>
+  <input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endblock %}
+
+
+

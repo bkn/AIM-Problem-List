@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Moderate Remarks</title>
+    <link rel="stylesheet" href="/style/main.css" type="text/css">
+  </head>
+  <body>
+    <div id="header">
+      <h1>Moderate Remarks</h1>
+    </div>
+    <div id="nav">
+      <p><a href="/">All Problem Lists</a></p>
+    </div>
+    <div id="content">
+      <p>This page is designed to help with choosing which remarks to publish, on which problemblocks.</p>
+      <ul id="remarks"></ul>
+    </div>
+    <script src="/json2.js"></script>
+    <script src="/jquery.js"></script>
+    <script src="/jquery.couch.js"></script>
+    <script src="/vendor/couchapp/jquery.couchapp.js"></script>
+    <script src="/mustache.js"></script>
+    <script type="text/javascript">
+      basePath = '/';
+    </script>
+    <script src="/easyload-tags.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      $.CouchApp(function(app) {
+        var cur, pblocks = [];
+        app.view("remarks",{
+          // startkey:["unmoderated"], 
+          // endkey:["unmoderated",{}], 
+          success: function(view) {
+            var lis = view.rows.forEach(function(row) {
+              if (row.value.type == "pblock"){
+                if (cur && cur.rems && cur.rems.length > 0) {
+                  pblocks.push(cur)
+                }
+                cur = row;
+              } else {
+                cur.rems = cur.rems || [];
+                cur.rems.push(row);
+              }
+            });
+            cur && cur.rems && pblocks.push(cur);
+            $.get("/templates/moderate_remark.html", 
+              function(template) {
+                var lis = pblocks.map(function(pb) {
+                  return Mustache.to_html(template, {
+                    prob : pb.value.problem_tag || pb.id,
+                    rems : pb.rems.map(function(r) {
+                      return {
+                        by : r.value.by || "",
+                        email : r.value.email || "",
+                        remark : r.value.remark || "",
+                        path : '/pl/'+pb.value.list_name,
+                        pblock_id : pb.id,
+                        rem_id : r.id
+                      }
+                    })
+                  })
+                });
+                $("#remarks").append(lis.join(''));
+                $("#remarks .math").each(function() {
+                  jsMath.ProcessElement(this);                  
+                });
+                $("#remarks input").click(function() {
+                  var id = this.id.split('!');
+                  var remn = $(this).parent();
+                  var status = this.name;
+                  if (status == "denied") {
+                    app.db.openDoc(id[1],{
+                      success : function(rem) {
+                        rem.status = status;
+                        app.db.saveDoc(rem);
+                        remn.hide("slow");
+                    }});
+                  } else {
+                    app.db.openDoc(id[0],{
+                      success : function(pblock) {
+                        app.db.openDoc(id[1],{
+                          success : function(rem) {
+                            pblock.remarks = pblock.remarks || [];
+                            pblock.remarks.push(rem);
+                            app.db.saveDoc(pblock, {
+                              success : function() {
+                                rem.status = status;
+                                app.db.saveDoc(rem);
+                                remn.hide("slow");
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              });
+          }
+        })
+      },{
+        dbname : "aimpl",
+        ddocname : "aimpl"
+      });
+
+    </script>
+  </body>
+</html>

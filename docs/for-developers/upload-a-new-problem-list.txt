@@ -1,0 +1,22 @@
+# Uploading a New Problem List
+
+This document describes the mechanism that lets users add a new problem list. It is
+intended for developers.
+
+## The Big Picture
+
+The upload mechanism consists of three parts:
+
+ - aimpl/_attachments/new.html — A basic upload form
+ - aimpl/newlist — A document that has the uploaded tex file as an attachment
+ - lib/cronjobs/process-new-list.rb — A glue script that turns the attachment into
+   documents
+
+The upload form page looks at the `/aimpl/newlist` document and checks the `is_new`
+property. If true, a previous run of the upload occurred and the processing script
+hasn't been run yet. If false, it will display an upload form.
+
+The upload form adds the uploaded latex file to the `/aimpl/newlist` attachment list and sets the `is_new` property to true.
+
+The processing script runs periodically and checks if the `/aimpl/newlist` `is_new` property is true. If it is, it reads the latex from the attachment, parses it using the `lib/*rb` parsers and inserts the result into CouchDB. It proceeds to delete the attachment and sets the `is_new` property to `false`.
+

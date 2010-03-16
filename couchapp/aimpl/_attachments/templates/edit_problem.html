@@ -1,0 +1,16 @@
+<form class="edit_pb">
+
+
+<p><label for="intro">Intro:</label><br>
+<textarea name="intro" id="intro">{{#intro}}{{intro}}{{/intro}}</textarea></p>
+
+
+{{#problem}}
+
+<p><label for="by">By:</label><br><input type="text" name="by" id="by" value="{{#problem.by}}{{problem.by}}{{/problem.by}}"></p>
+
+<p><label for="body">Body:</label><br><textarea id="body" name="body">{{#problem.body}}{{problem.body}}{{/problem.body}}</textarea></p>
+{{/problem}}
+
+<p><input type="reset" value="Cancel edit" class="ce">&nbsp;<input type="submit" value="Save this problem" class="edit_inplace"></p>
+</form>

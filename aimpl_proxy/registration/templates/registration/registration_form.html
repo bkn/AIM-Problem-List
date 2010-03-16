@@ -1,0 +1,19 @@
+{% extends "registration/base.html" %}
+
+{% block title %}Register for an account{% endblock %}
+
+{% block content %}
+
+<h1>Register for an account</h1>
+
+<p>You'll need an email address so that we can send you a confirmation email.
+That email will give you information about activating your new account.</p>
+
+<form method="post" action="">
+  <table>
+  {{ form.as_table }}
+  <tr><th></th><td><input type="submit" value="Submit" /></td></tr>
+  </table>
+</form>
+
+{% endblock %}

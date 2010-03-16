@@ -1,0 +1,48 @@
+nitin call notes
+
+= Contract
+ - Chris as Proxy
+  - Jason & Jan cheques sucks
+  - 
+
+
+= Permission separate from CouchDB
+ - adaptable to enterprise
+
+
+= Immediate Needs
+ - trunk-couchdbx for Leopard
+ - URL rewriting:
+  - aimpl:freeanalyis
+  - aimpl.org/freeanalysis/
+  - aimpl:freeanalyis/2.1
+  - aimpl.org/freeanalysis/2/1
+  - aimpl:freeanalyis-v4
+  - aimpl.org/freeanalysis-v4/2/1
+
+  - least possible non-standard couch parts
+
+
+= Nitin todo
+ - share url gdoc
+ - share contract
+ - short list of immediate needs from Jan (?)
+
+
+= LaTeX
+ - jsMath
+ - LaTeX in the backend / typesetd
+ - JSON to XHTML conversion for jsMath
+
+= Jobs
+ - Ruby: Chris / Jan
+ - Python: Jason / Jan / Nitin
+ - LaTeX: Jan / Jason
+
+= REST API for problem lists (Nitin draft / Jan REST)
+
+
+
+phase 1: prototype
+phase 2: permission
+phase 3: hosting

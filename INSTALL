@@ -1,0 +1,97 @@
+Quick installation on local machine
+-----------------------------------
+Date: 2009-11-16 06:37 AM
+Author: Benoît Chesneau <bchesneau@gmail.com>
+
+
+1/ Requirements 
+---------------
+
+- Django 1.1
+- Restkit 0.9.1 or sup
+- CouchDB 0.11 (trunk)
+- Couchapp 0.5 or sup
+- Couchdbkit 0.3 or sup
+- Python 2.5x or 2.6x
+
+2/ Install Sources
+------------------
+
+$ git clone git@github.com:benoitc/aimpl.git
+$ cd aimpl
+$ git submodule update
+$ git submodule init
+
+
+3/ Build couchdb
+CouchdDB sources are in vendor/couchdb folder/
+
+then build it as usual CouchDB. 
+
+Copy etc/aimpl.ini in vendoc/couchdb/etc/couchdb
+
+then run CouchDB with this ini. eg. if you build with dev :
+
+$ cd vendoc/couchdb
+$ ./utils/run -a etc/couchdb/aimpl.ini
+
+
+3/ Install Other sources
+--------------------------------
+
+We use buildout (http://www.buildout.org/) to install all dependancies of the project. It will install django and couchapp in a sandboxed environment.
+
+Go on the root of aimpl folder
+
+run :
+
+$ python bootstrap.py 
+$ ./bin/buildout 
+
+6/ Install the couchapp on couchdb
+---------------------------------
+
+Go on the root of aimpl folder  :
+  
+  $ cd couchapp/aimpl
+  $ ../../bin/couchapp init
+  $ couchapp push aimpl
+
+
+7/ Configure the Django proxy
+-----------------------------
+
+a. Edit settings
+=================
+
+Go on the root of aimpl folder  :
+  $ cd aimpl_proxy
+
+Edit development.py, and at the end of file make sure to have :
+
+  WEB_PROXY_DOMAIN = '127.0.0.1'
+  WEB_PROXY_PORT = 5984
+  WEB_PROXY_BASE = 'aimpl/_design/aimpl'
+
+WEB_PROXY_DOMAIN is the CouchDB IP
+WEB_PROXY_PORT is the port on which CouchDB run
+WEB_PROXY_BASE is the base to designdoc on CouchdDB
+
+
+make sure that `SECRET_KEY` variable contain the same value you used for secret setting in CouchDB.
+
+b. uncompress jsMath fonts in media/folder :
+
+  $ mkdir -p media/jsmath/fonts
+  $ cd jsMath
+  $ unzip ../../resources/jsMath.zip
+
+c. test
+
+launch the proxy. Go on the root of aimpl folder  and run :
+
+  $ ./bin/django runserver
+
+then go on http://127.0.0.1:8000/pl
+
+

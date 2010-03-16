@@ -1,0 +1,10 @@
+login.html — user login form
+logout.html — shown after a user has logged out
+password_change_form.html — password change form
+password_change_done.html — shown after successful password change
+password_reset_form.html — ask user for email to send password-reset mail to
+password_reset_email.html — template for password-reset mail
+password_reset_done.html — shown after password-reset email has been sent
+password_reset_confirm.html — ask user for new password after reset
+password_reset_complete.html — shown after successful password reset
+

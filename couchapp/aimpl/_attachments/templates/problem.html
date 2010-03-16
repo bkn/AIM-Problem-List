@@ -1,0 +1,20 @@
+
+{{#probname}}
+  <div class="probname">{{{probname}}}</div>
+{{/probname}}
+  
+  {{#intro}}
+    <p class="intro"><div class="xmath">{{{intro}}}</div></p>
+  {{/intro}}
+
+  <div>
+    {{#problem}}
+      {{#probtag}}
+      <span class="probhead xmath">{{{probtag}}}.</span>
+      {{/probtag}}
+      {{#problem.by}}
+      <span class="probheadby xmath">[{{{problem.by}}}]</span>
+      {{/problem.by}}
+      <span class="probbody xmath">{{{problem.body}}}</span>
+    {{/problem}}
+  </div>

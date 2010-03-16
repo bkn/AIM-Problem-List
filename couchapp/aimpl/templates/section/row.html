@@ -1,0 +1,36 @@
+<li class="prob {{_id}}"><a name="{{probfrag}}"></a>
+  <div class="probc" id="{{_id}}">
+    {{#canedit}}<p><a id="edit_{{_id}}" class="editp" href="#">Edit This problem</a></p>{{/canedit}}
+    <!-- <h4><a name="{{probtag}}"></a>{{probtag}}</h4> -->
+
+    <div class="probd">
+
+	  {{#probname}}
+      <div class="probname">{{{probname}}}</div>
+	  {{/probname}}
+      
+      {{#intro}}
+        <p class="intro"><div class="xmath">{{{intro}}}</div></p>
+      {{/intro}}
+
+      <div class="xmath">
+	      {{#problem}}
+          {{#probtag}}
+          <span class="probhead">{{{probtag}}}.</span>
+          {{/probtag}}
+          {{#problem.by}}
+          <span class="probheadby">[{{{problem.by}}}]</span>
+          {{/problem.by}}
+          <span class="probbody">{{{problem.body}}}</span>
+	      {{/problem}}
+      </div>
+
+    </div>
+
+	{{#canremark}}<a class="makeremark" href="#">Add a Remark</a><br class="clear"/>{{/canremark}}
+  </div>
+
+  {{#remarks}}
+  {{{rmarks}}}
+  {{/remarks}}
+</li>
